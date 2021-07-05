@@ -1,17 +1,16 @@
 """
-Converter for all mkv files to mp4 all at once
+movieConverter: Converter for all mkv files to mp4 all at once
 Hussein Esmail
-January 21, 2020
-
+Created: 2020 01 21 
+Updated: 2020 02 15
 Description: Batch converter from mkv to mp4 that checks multiple folders, and all go to the same place
 """
-# IMPORT STATEMENTS
-import os  # To run commands, change directories, delete files, etc.
-import time  # For time delays
-from termcolor import colored  # To print colored text in terminal (when run in terminal)
+
+import os                       # To run commands, change directories, delete files, etc.
+import time                     # For time delays
+from termcolor import colored   # To print colored text in terminal (when run in terminal)
 import shutil
 import datetime
-from os import path
 import re
 
 # VARIABLES
@@ -167,7 +166,7 @@ def convertToMP4():
                         if file_stats.st_size == 0:
                             # print(colored("\t\tConversion failed. Running alternate...", colorWarning))
                             fileToDelete = strPathOfMP4s2 + "/" + strAllFilesInMkvDir[i] + strTypeTarget
-                            if path.exists(fileToDelete):
+                            if os.path.exists(fileToDelete):
                                 os.remove(fileToDelete)
                             # Run the command without the tag
                             convertCommand = "ffmpeg" + strShowTerminalPrints + " -i " + strPathOfMKVs \
@@ -181,7 +180,7 @@ def convertToMP4():
                     except Exception as e:
                         print(colored(strConvertingAlternate, colorWarning))
                         fileToDelete = strPathOfMP4s2 + "/" + strAllFilesInMkvDir[i] + strTypeTarget
-                        if path.exists(fileToDelete):
+                        if os.path.exists(fileToDelete):
                             os.remove(fileToDelete)
                         # Run the command without the tag
                         convertCommand = "ffmpeg" + strShowTerminalPrints + " -i " + strPathOfMKVs \
@@ -192,7 +191,7 @@ def convertToMP4():
                         # -c copy           --> Leave the original copy alone
                         os.system(convertCommand)  # This line will run the program in terminal
                         fileToCheck = strPathOfMP4s2 + "/" + strAllFilesInMkvDir[i] + strTypeTarget
-                        if path.exists(fileToCheck):
+                        if os.path.exists(fileToCheck):
                             file_stats = os.stat(fileToCheck)
                     arrayTempConvertedFiles.append(strAllFilesInMkvDir[i])
                     try:
@@ -223,7 +222,7 @@ def convertToMP4():
     print(colored("Converted " + str(len(arrayTempConvertedFiles)) + " files", colorCompleted))
     if boolDeleteSourceFileAfterConvert:
         print(colored(str(len(arrayTempConvertedFiles)) + " original files deleted", colorFilesDeletedNotification))
-    if path.exists(strSmartConverterPath):
+    if os.path.exists(strSmartConverterPath):
         for file in os.listdir(strSmartConverterPath):
             try:
                 shutil.move(strSmartConverterPath + "/" + file, strPathOfMP4s2 + "/" + file)
